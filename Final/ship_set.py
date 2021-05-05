@@ -93,27 +93,23 @@ class ship_set:
                 self.new_y = int(self.first_y) + n
                 self.new_position = f'({self.first_x}, {self.new_y})'
                 self.player_patrol_boat['position'].append(self.new_position)
-            print('North')
 
         if self.p_patrol_direction.lower() == 'e':
             for n in range(1,2):
                 self.new_x = int(self.first_x) + n
                 self.new_position = f'({self.new_x}, {self.first_y})'
                 self.player_patrol_boat['position'].append(self.new_position)
-            print('East')
 
         if self.p_patrol_direction.lower() == 's':
             for n in range(1,2):
                 self.new_y = int(self.first_y) - n
                 self.new_position = f'({self.first_x}, {self.new_y})'
                 self.player_patrol_boat['position'].append(self.new_position)
-            print('South')
 
         if self.p_patrol_direction.lower() == 'w':
             for n in range(1,2):
                 self.new_x = int(self.first_x) - n
                 self.new_position = f'({self.new_x}, {self.first_y})'
                 self.player_patrol_boat['position'].append(self.new_position)
-            print('West')
             
         return self.player_patrol_boat

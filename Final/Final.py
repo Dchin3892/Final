@@ -65,9 +65,11 @@ while game_start == True:
   print_board(board)
 
   # For testing/presentation
+  #################################
   print(ai_battleship['position'])
   print(ai_destroyer['position'])
   print(ai_patrol_boat['position'])
+  #################################
 
   game_running = True
 
@@ -86,6 +88,7 @@ while game_start == True:
       previous_shots.append(target)
       hit = False
 
+      # Checking if any of the AI ships are hit
       for h in ai_battleship['position']:
         if target == str(h):
             ai_battleship['health'] = ai_battleship['health'] - 1
@@ -130,6 +133,7 @@ while game_start == True:
                 print('Patrol Boat Destroyed!')
             turn = 1
             break
+
       if hit == False:
         os.system('cls')
         add_to_board(board, target, '0')
@@ -145,7 +149,6 @@ while game_start == True:
     while turn == 1:
       # No target, random shooting
       while (current_target == '') & (turn == 1) & (hits == 0):
-        print('1')
         time.sleep(2)
         print("AI's turn")
         print("Choosing target")
@@ -155,6 +158,7 @@ while game_start == True:
         full_map.remove(ai_shot)
         hit = False
 
+        # Checking to see if a player ship is hit
         for h in player_battleship['position']:
           if str(ai_shot) == str(h):
               hit = True
@@ -166,6 +170,7 @@ while game_start == True:
               print(ai_shot)
               print('HIT!')
               first_hit = ai_shot
+              # Creating an array of the next possible hits
               second_shots = [(first_hit[0], first_hit[1]+1), (first_hit[0], first_hit[1]-1), (first_hit[0]+1, first_hit[1]), (first_hit[0]-1, first_hit[1])]
               current_target = player_battleship
               turn = 0
@@ -183,6 +188,7 @@ while game_start == True:
               print(ai_shot)
               print('HIT!')
               first_hit = ai_shot
+              # Creating an array of the next possible hits
               second_shots = [(first_hit[0], first_hit[1]+1), (first_hit[0], first_hit[1]-1), (first_hit[0]+1, first_hit[1]), (first_hit[0]-1, first_hit[1])]
               current_target = player_destroyer
               turn = 0
@@ -200,6 +206,7 @@ while game_start == True:
               print(ai_shot)
               print('HIT!')
               first_hit = ai_shot
+              # Creating an array of the next possible hits
               second_shots = [(first_hit[0], first_hit[1]+1), (first_hit[0], first_hit[1]-1), (first_hit[0]+1, first_hit[1]), (first_hit[0]-1, first_hit[1])]
               current_target = player_patrol_boat
               turn = 0
@@ -216,12 +223,10 @@ while game_start == True:
 
       # has a target, shooting around the first hit
       while (current_target != '') & (turn == 1) & (hits == 1):
+        # Removing targets that have already been hit from the array
         for a in second_shots:
           if a not in full_map:
             second_shots.remove(a)
-        print('2')
-        print(current_target['type'])
-        print(current_target['position'])
         time.sleep(2)
         print("AI's turn")
         print("Choosing target")
@@ -244,11 +249,13 @@ while game_start == True:
             print('HIT!')
             second_hit = ai_shot
 
+            # Creating arrays for the next 2 coordinates for each direction
             more_shots_W = [(second_hit[0]-1, second_hit[1]), (second_hit[0]-2, second_hit[1])]
             more_shots_E = [(first_hit[0]+1, first_hit[1]), (first_hit[0]+2, first_hit[1])]
             more_shots_N = [(second_hit[0], second_hit[1]+1), (second_hit[0], second_hit[1]+2)]
             more_shots_S = [(first_hit[0], first_hit[1]-1), (first_hit[0], first_hit[1]-2)]
 
+            # Determining a possible direction based on the first and second hits
             if (first_hit[0] - second_hit[0]) == 1:
               fire_direction = 'W'
             
@@ -261,6 +268,7 @@ while game_start == True:
             elif (first_hit[1] - second_hit[1] == -1):
               fire_direction = 'N'
 
+            # Removing targets from the arrays and if there are none left changing the direction
             for b in more_shots_W:
               if b not in full_map:
                 more_shots_W.remove(b)
@@ -285,6 +293,7 @@ while game_start == True:
             if len(more_shots_S) == 0:
               fire_direction = 'N'
 
+            # Checking if the target is destroyed
             if current_target['health'] == 0:
                 ai_destroyed += 1
                 name = current_target['type']
@@ -303,13 +312,11 @@ while game_start == True:
           add_to_board2(board, ai_shot_add, '0')
           turn = 0
           print_board(board)
-          print(second_shots)
           print(ai_shot)
           print('MISS')
 
       # Continueing shots past the first 2 hits
       while (current_target != '') & (turn == 1) & (hits >= 2):
-        print('3')
         time.sleep(2)
         print("AI's turn")
         print("Choosing target")
@@ -375,7 +382,8 @@ while game_start == True:
               turn = 0
               hit = True
               break
-            
+        
+        # If a miss occurs it changes direction
         if hit == False:
           if fire_direction == 'W':
             fire_direction = 'E'
@@ -396,6 +404,7 @@ while game_start == True:
           print(ai_shot)
           print('MISS')
 
+    # Checking if the game is over
     if ai_destroyed == 3:
       print('Game Over, You Lose')
       game_running == False
@@ -405,6 +414,7 @@ while game_start == True:
       print('Game Over, You Win')
       game_running == False
       break
+
   print('Would you like to play again? Y/N')
   answer = input()
   if answer.lower() == 'y':
